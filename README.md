@@ -1,1 +1,3 @@
-# JuntaA-
+# JuntaAÍ
+
+Entendendo o projeto...
