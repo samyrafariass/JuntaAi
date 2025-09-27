@@ -85,6 +85,3 @@ git clone https://github.com/
 * **Samyra Farias**
 * **Valmir Klenio**
 * **Vitória Tirza**
-
-Este projeto está sob a licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais informações.
-
