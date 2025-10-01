@@ -37,7 +37,7 @@
 --					Descricao_Alerta VARCHAR(100),
 --					Solicitacao VARCHAR(15) CHECK (Solicitacao = 'Recebida' OR Solicitacao = 'Atendida' OR Solicitacao = 'Cancelada'),
 --					Id_Alerta INTEGER,
-					--FOREIGN KEY(Id_Alerta) REFERENCES Alerta(Id_Alerta));
+--					FOREIGN KEY(Id_Alerta) REFERENCES Alerta(Id_Alerta));
 
 
 --CREATE TABLE Classificacao (Id_Classificacao INT PRIMARY KEY IDENTITY(1000,1),
@@ -135,8 +135,8 @@
 --INSERT INTO 
 --	   Denuncia (Data_Hora, Situacao_Atual, Descricao, Status_Denuncia, Violencia_Sofrida, Anonimo)
 --VALUES
---	   (SYSDATETIME(), 'Em perigo', 'Vítima apresenta sinais de violência física', 'Em analise', 'Física', 1),
---	   (SYSDATETIME(), 'Controlada', 'Vítima apresenta sinais de violência psicologica', 'Pendente', 'Psicologica', 0),
+--	   (SYSDATETIME(), 'Em perigo', 'Vítima apresenta sinais de violência física', 'Em analise', 'Fisica', 1),
+--	   (SYSDATETIME(), 'Controlada', 'Vítima apresenta sinais de violência psicologica', 'Pendente', 'Psicologica', 1),
 --	   (SYSDATETIME(), 'Fora de perigo', 'Vítima apresenta sinais de violência moral', 'Em analise', 'Moral', 1);
 
 --INSERT INTO 
@@ -152,6 +152,7 @@
 --	   ('Violêcia Física', 'Socos, tapas e empurrões'),
 --	   ('Violêcia Moral', 'Xingamentos, humilhações'),
 --	   ('Violêcia Patrimonial', 'Subtração de bens financeiros');
+
 
 -- Quantidade de denúncias por usuária e o último registro feito
 
