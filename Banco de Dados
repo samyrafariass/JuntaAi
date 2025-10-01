@@ -1,1 +1,164 @@
+--CREATE DATABASE Juntaai;
+--GO
+--USE Juntaai;
 
+--CREATE TABLE Usuaria(Id_Usuaria INTEGER PRIMARY KEY IDENTITY(1000,1),
+--					 Nome VARCHAR(50) NOT NULL,
+--					 Idade INT CHECK (Idade >= 18),
+--					 Telefone VARCHAR(15),
+--					 CEP VARCHAR(10),
+--					 Endereco VARCHAR(100),
+--					 Email VARCHAR(50) UNIQUE NOT NULL,
+--					 Senha VARCHAR(15) NOT NULL);
+
+
+--CREATE TABLE Rede_Apoio(Id_Rede_Apoio INTEGER PRIMARY KEY IDENTITY(1000,1),
+--						Nome VARCHAR(50) NOT NULL,
+--						Responsavel VARCHAR(20) NOT NULL,
+--						Descricao VARCHAR(100),
+--						Endereco VARCHAR(100) NOT NULL,
+--						Telefone VARCHAR(15) NOT NULL,
+--						Horario DATETIME,
+--						Id_Usuaria INTEGER,
+--						FOREIGN KEY(Id_Usuaria) REFERENCES Usuaria(Id_Usuaria));
+
+
+--CREATE TABLE Alerta (Id_Alerta INT PRIMARY KEY IDENTITY(1000,1),
+--					 Nome VARCHAR(50),
+--					 Endereco VARCHAR(100) NOT NULL,
+--					 Data_Hora DATETIME,
+--					 Status_Alerta VARCHAR(15) CHECK (Status_Alerta = 'Enviado' OR Status_Alerta = 'Cancelado'),
+--					 Id_Usuaria INTEGER,
+--					 FOREIGN KEY(Id_Usuaria) REFERENCES Usuaria(Id_Usuaria));
+
+
+--CREATE TABLE Orgao (Id_Orgao INT PRIMARY KEY IDENTITY(1000,1),
+--					Nome VARCHAR(50) NOT NULL,
+--					Descricao_Alerta VARCHAR(100),
+--					Solicitacao VARCHAR(15) CHECK (Solicitacao = 'Recebida' OR Solicitacao = 'Atendida' OR Solicitacao = 'Cancelada'),
+--					Id_Alerta INTEGER,
+					--FOREIGN KEY(Id_Alerta) REFERENCES Alerta(Id_Alerta));
+
+
+--CREATE TABLE Classificacao (Id_Classificacao INT PRIMARY KEY IDENTITY(1000,1),
+--							Descricao VARCHAR(100) NOT NULL,
+--							Localizacao VARCHAR(70),
+--							Telefone VARCHAR(15) NOT NULL,
+--							Id_Orgao INTEGER,
+--							FOREIGN KEY(Id_Orgao) REFERENCES Orgao(Id_Orgao));
+
+
+--CREATE TABLE Denuncia(Id_Denuncia INT PRIMARY KEY IDENTITY(1000,1),
+--					  Data_Hora DATETIME,
+--					  Situacao_Atual VARCHAR(20) CHECK (Situacao_Atual = 'Em perigo' OR Situacao_Atual = 'Controlada' OR Situacao_Atual = 'Fora de perigo') NOT NULL,
+--					  Descricao VARCHAR(100) NOT NULL,
+--					  Status_Denuncia VARCHAR(20) CHECK (Status_Denuncia = 'Pendente' OR Status_Denuncia = 'Em analise' OR Status_Denuncia = 'Concluida') NOT NULL,
+--					  Violencia_Sofrida VARCHAR(50) CHECK (Violencia_Sofrida = 'Fisica' OR Violencia_Sofrida = 'Psicologica' OR Violencia_Sofrida = 'Sexual' OR Violencia_Sofrida = 'Patrimonial' OR Violencia_Sofrida = 'Moral') NOT NULL,
+--					  Anonimo BIT NOT NULL DEFAULT 0,
+--					  CONSTRAINT CK_Denuncia_Anonimo 
+--						 CHECK ((Anonimo = 1 AND Id_Usuaria IS NULL) OR (Anonimo = 0 AND Id_Usuaria IS NOT NULL)),
+--					  Id_Usuaria INTEGER,
+--					  Id_Orgao INTEGER,
+--					  FOREIGN KEY(Id_Usuaria) REFERENCES Usuaria(Id_Usuaria) ON DELETE CASCADE,
+--					  FOREIGN KEY(Id_Orgao) REFERENCES Orgao(Id_Orgao));
+
+
+--CREATE TABLE Tipo_Violenca (Id_Tipo_Violencia INTEGER PRIMARY KEY IDENTITY(1000,1),
+--							Sessao INTEGER NOT NULL,
+--							Pergunta VARCHAR(70) NOT NULL,
+--							Resposta VARCHAR(70) NOT NULL,
+--							Status VARCHAR(20) CHECK (Status = 'Respondido' OR Status = 'Nao respondido'),
+--							Id_Usuaria INTEGER,
+--							FOREIGN KEY(Id_Usuaria) REFERENCES Usuaria(Id_Usuaria));
+
+
+--CREATE TABLE Conteudo_Informativo (Id_Conteudo INTEGER PRIMARY KEY IDENTITY(1000,1),
+--								  Conteudo VARCHAR(30) NOT NULL,
+--								  Descricao VARCHAR(200) NOT NULL);
+
+
+--CREATE TABLE Acessa (Id_Usuaria INT NOT NULL,
+--					  Id_Conteudo INT NOT NULL,
+--					  FOREIGN KEY(Id_Conteudo) REFERENCES Conteudo_Informativo(Id_Conteudo),
+--					  FOREIGN KEY(Id_Usuaria) REFERENCES Usuaria(Id_Usuaria),
+--					  PRIMARY KEY (Id_Usuaria, Id_Conteudo));
+
+
+--CREATE TABLE Sofre (Id_Tipo_Violencia INT NOT NULL,
+--					  Id_Usuaria INT NOT NULL,
+--					  FOREIGN KEY(Id_Tipo_Violencia) REFERENCES Tipo_Violenca(Id_Tipo_Violencia),
+--					  FOREIGN KEY(Id_Usuaria) REFERENCES Usuaria(Id_Usuaria),
+--					  PRIMARY KEY (Id_Tipo_Violencia, Id_Usuaria));
+
+
+--CREATE TABLE Utiliza (Id_Rede_Apoio INT NOT NULL,
+--					   Id_Usuaria INT NOT NULL,
+--					   FOREIGN KEY(Id_Rede_Apoio) REFERENCES Rede_Apoio(Id_Rede_Apoio),
+--					   FOREIGN KEY(Id_Usuaria) REFERENCES Usuaria(Id_Usuaria),
+--					   PRIMARY KEY (Id_Rede_Apoio, Id_Usuaria));
+
+--INSERT INTO 
+--	   Usuaria (Nome, Idade, Telefone, CEP, Endereco, Email, Senha)
+--VALUES
+--	   ('Julia', 18, '8191234-5678', '00000-000', 'Rua das Flores, 123', 'julia@gmail.com', '12345678'),
+--	   ('Maria', 24, '8191234-5678', '00000-000', 'Av.Recife, 456', 'maria@gmail.com', '12345678'),
+--	   ('Ana', 32, '8191234-5678', '00000-000', 'Rua da Aurora, 789', 'ana@gmail.com', '12345678');
+
+--INSERT INTO 
+--	   Rede_Apoio (Nome, Responsavel, Descricao, Endereco, Telefone, Horario)
+--VALUES
+--	   ('ONG Marias', 'Maria José', 'Cuidamos de você com paciência, rompendo o ciclo e conquistando sua independência', 'Av.Recife, 456', '0000-0000', SYSDATETIME()),
+--	   ('ONG Malala', 'Augusta Lima', 'Acolhendo mulheres que sofrem de violência física e psicológica', 'Av.Recife, 123', '0000-0000', SYSDATETIME()),
+--	   ('ONG Renascer', 'Margarida Silva', 'Rompa o ciclo da violencia e busque seu renascimento', 'Av.Recife, 000', '0000-0000', SYSDATETIME());
+
+--INSERT INTO 
+--	   Alerta (Nome, Endereco, Data_Hora, Status_Alerta)
+--VALUES
+--	   ('Maria', 'Av.Recife, 456', SYSDATETIME(), 'Enviado'),
+--	   ('Ana', 'Av.Francisco da Cunha, 000', SYSDATETIME(), 'Enviado'),
+--	   ('Julia', 'Av.Recife, 000', SYSDATETIME(), 'Enviado');
+
+--INSERT INTO 
+--	   Orgao (Nome, Descricao_Alerta, Solicitacao)
+--VALUES
+--	   ('Delegacia da Mulher', 'Mulher com supostas agressoes realizadas pelo parceiro', 'Recebida'),
+--	   ('Direitos Humanos', 'Mulher e criança com supostas agressoes realizadas pelo parceiro/pai da criança', 'Recebida'),
+--	   ('Delegacia da Mulher', 'Mulher com indícios de violência patrimonial realizada pelo ex-parceiro', 'Recebida');
+
+--INSERT INTO 
+--	   Classificacao (Descricao, Localizacao, Telefone)
+--VALUES
+--	   ('Especializada em violência contra a mulher', 'Av.Recife, 456', 180),
+--	   ('Também realiza atendimento em caso de violência contra a mulher envolvendo crianças', 'Av.Francisco da Cunha, 000', 100),
+--	   ('Especializada em violência contra a mulher', 'Av.Recife, 123', 180);
+
+--INSERT INTO 
+--	   Denuncia (Data_Hora, Situacao_Atual, Descricao, Status_Denuncia, Violencia_Sofrida, Anonimo)
+--VALUES
+--	   (SYSDATETIME(), 'Em perigo', 'Vítima apresenta sinais de violência física', 'Em analise', 'Física', 1),
+--	   (SYSDATETIME(), 'Controlada', 'Vítima apresenta sinais de violência psicologica', 'Pendente', 'Psicologica', 0),
+--	   (SYSDATETIME(), 'Fora de perigo', 'Vítima apresenta sinais de violência moral', 'Em analise', 'Moral', 1);
+
+--INSERT INTO 
+--	   Tipo_Violenca (Sessao, Pergunta, Resposta, Status)
+--VALUES
+--	   (1, 'Possui filhos com o agressor?', 'Sim/Não', 'Respondido'),
+--	   (4, 'Você está passando por xingamentos e humilhações', 'Sim/Não', 'Nao Respondido'),
+--	   (1, 'Precisa ter contato com o agressor por conta dos filhos', 'Sim/Não', 'Respondido');
+
+--INSERT INTO 
+--	   Conteudo_Informativo (Conteudo, Descricao)
+--VALUES
+--	   ('Violêcia Física', 'Socos, tapas e empurrões'),
+--	   ('Violêcia Moral', 'Xingamentos, humilhações'),
+--	   ('Violêcia Patrimonial', 'Subtração de bens financeiros');
+
+
+--SELECT * FROM Usuaria;
+--SELECT * FROM Rede_Apoio;
+--SELECT * FROM Alerta;
+--SELECT * FROM Orgao;
+--SELECT * FROM Classificacao;
+--SELECT * FROM Denuncia;
+--SELECT * FROM Conteudo_Informativo;
+--SELECT * FROM Tipo_Violenca;
