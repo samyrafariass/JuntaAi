@@ -153,6 +153,21 @@
 --	   ('Violêcia Moral', 'Xingamentos, humilhações'),
 --	   ('Violêcia Patrimonial', 'Subtração de bens financeiros');
 
+--SELECT 
+--    u.Nome AS Nome_Usuaria,
+--    COUNT(d.Id_Denuncia) AS Total_Denuncias,
+--    MAX(d.Id_Denuncia) AS Ultima_Denuncia,
+--    COUNT(DISTINCT r.Id_Rede_Apoio) AS Total_Redes_Apoio
+--FROM Usuaria u
+--JOIN Denuncia d 
+--    ON u.Id_Usuaria = d.Id_Usuaria
+--JOIN Utiliza ut 
+--    ON u.Id_Usuaria = ut.Id_Usuaria
+--JOIN Rede_Apoio r 
+--    ON ut.Id_Rede_Apoio = r.Id_Rede_Apoio
+--GROUP BY u.Nome;
+
+
 
 --SELECT * FROM Usuaria;
 --SELECT * FROM Rede_Apoio;
