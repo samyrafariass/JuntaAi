@@ -153,6 +153,8 @@
 --	   ('Violêcia Moral', 'Xingamentos, humilhações'),
 --	   ('Violêcia Patrimonial', 'Subtração de bens financeiros');
 
+-- Quantidade de denúncias por usuária e o último registro feito
+
 --SELECT 
 --    u.Nome AS Nome_Usuaria,
 --    COUNT(d.Id_Denuncia) AS Total_Denuncias,
