@@ -1,16 +1,18 @@
-# juntaai_app
+# 🧠 JuntaAÍ - Front-end
 
-A new Flutter project.
+Interface desenvolvida em **Flutter** e **Dart**, responsável pelas telas, rotas e componentes visuais do projeto **JuntaAÍ**.
 
-## Getting Started
+## 🛠️ Tecnologias
 
-This project is a starting point for a Flutter application.
+- Flutter
+- Dart
 
-A few resources to get you started if this is your first Flutter project:
+## 📂 Estrutura principal
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- **core/** → tema, rotas e constantes  
+- **features/** → telas (Splash, Home, Login, Cadastro)  
+- **shared/** → widgets reutilizáveis (botões, campos de texto)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+> Projeto acadêmico desenvolvido como parte do curso de **Ciência da Computação (UNIT - PE)**.
