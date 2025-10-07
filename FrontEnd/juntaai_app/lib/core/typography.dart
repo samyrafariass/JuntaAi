@@ -2,30 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTypography {
-  // Título principal: "Junta Aí!"
-  static TextStyle titleHome = GoogleFonts.poppins(
-    fontSize: 22,
-    fontWeight: FontWeight.w400, // Regular
-    height: 1.0, // line-height 100%
-    letterSpacing: 0.0,
-    color: Colors.black,
-  );
+  // =========================
+  // ⚙️ Base configurável
+  // =========================
+  static TextStyle _base({required double size, FontWeight weight = FontWeight.w400, Color color = Colors.black}) {
+    return GoogleFonts.poppins(fontSize: size, fontWeight: weight, height: 1.0, letterSpacing: 0.0, color: color);
+  }
 
-  // Subtítulo: "A comunidade que protege você!"
-  static TextStyle subtitleHome = GoogleFonts.poppins(
-    fontSize: 16,
-    fontWeight: FontWeight.w400, // Regular
-    height: 1.0, // line-height 100%
-    letterSpacing: 0.0,
-    color: Colors.black,
-  );
+  // =========================
+  // 🏠 HOME
+  // =========================
+  static final titleHome = _base(size: 22);
+  static final subtitleHome = _base(size: 16);
+  static final buttonPrimary = _base(size: 14, weight: FontWeight.w600, color: Colors.white);
 
-  // Botão primário: "Iniciar"
-  static TextStyle buttonPrimary = GoogleFonts.poppins(
-    fontSize: 14,
-    fontWeight: FontWeight.w600, // SemiBold
-    height: 1.0, // line-height 100%
-    letterSpacing: 0.0,
-    color: Colors.white,
-  );
+  // =========================
+  // 🔐 LOGIN
+  // =========================
+  static final pageTitle = _base(size: 15);
+  static final loginTitle = _base(size: 17, weight: FontWeight.w500);
+  static final loginSubtitle = _base(size: 13, color: const Color(0xFF979797));
+
+  static final fieldLabel = _base(size: 12);
+  static final hint = _base(size: 10, color: const Color(0x66000000));
+
+  static final forgotPassword = _base(size: 12, color: const Color(0xFFEE1162));
+
+  static final buttonOutlined = _base(size: 14, weight: FontWeight.w500, color: const Color(0xFFEE1162));
+
+  static final registerBody = _base(size: 13);
+  static final registerLink = _base(size: 13, weight: FontWeight.w500, color: const Color(0xFFEE1162));
 }
