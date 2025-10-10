@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+// importações das telas
 import '../../features/splash/presentation/splash_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
 import '../../features/auth/presentation/login_screen.dart';
-import '../../features/register/presentation/cadastro_screen.dart'; // ⬅️ nova tela
+import '../../features/register/presentation/cadastro_screen.dart';
+import '../../features/dashboard/presentation/dashboard_screen.dart';
+
+// telas de recuperação (somente as prontas)
+import '../../features/auth/presentation/recovery_request_screen.dart';
+import '../../features/auth/presentation/recovery_code_screen.dart';
 
 class AppRouter {
   // Transição padrão: slide da direita (300ms)
@@ -24,7 +30,7 @@ class AppRouter {
     );
   }
 
-  // Um único GoRouter para o app inteiro
+  // GoRouter principal do app
   static final GoRouter router = GoRouter(
     initialLocation: '/',
     routes: [
@@ -45,8 +51,25 @@ class AppRouter {
       ),
       GoRoute(
         path: '/cadastro',
-        name: 'cadastro', // ⬅️ novo nome de rota
+        name: 'cadastro',
         pageBuilder: (_, __) => _slideRightPage(child: const CadastroScreen()),
+      ),
+      GoRoute(
+        path: '/dashboard',
+        name: 'dashboard',
+        pageBuilder: (_, __) => _slideRightPage(child: const DashboardScreen()),
+      ),
+
+      // ======== Recuperação de Senha ========
+      GoRoute(
+        path: '/recovery/request',
+        name: 'recovery_request',
+        pageBuilder: (_, __) => _slideRightPage(child: const RecoveryRequestScreen()),
+      ),
+      GoRoute(
+        path: '/recovery/code',
+        name: 'recovery_code',
+        pageBuilder: (_, __) => _slideRightPage(child: const RecoveryCodeScreen()),
       ),
     ],
     errorBuilder: (_, __) => const Scaffold(body: Center(child: Text('Rota não encontrada'))),

@@ -121,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Align(
                         alignment: Alignment.centerRight,
                         child: GestureDetector(
-                          onTap: () {},
+                          onTap: () => context.goNamed('recovery_request'),
                           child: Text('Esqueceu sua senha?', style: AppTypography.forgotPassword),
                         ),
                       ),
@@ -131,7 +131,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     // top:684 → (texto esqueceu ~609 + 18 de altura = 627) → 684 - 627 = 57
                     const SizedBox(height: 57),
                     Center(
-                      child: PrimaryButton(label: 'Fazer login', onPressed: () {}, width: 271, height: 50, backgroundColor: pink, borderRadius: 5),
+                      child: PrimaryButton(
+                        label: 'Fazer login',
+                        onPressed: () {
+                          context.goNamed('dashboard');
+                        },
+                        width: 271,
+                        height: 50,
+                        backgroundColor: pink,
+                        borderRadius: 5,
+                      ),
                     ),
 
                     // ===== OUTLINED =====
