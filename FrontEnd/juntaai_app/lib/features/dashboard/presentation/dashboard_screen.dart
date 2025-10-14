@@ -27,65 +27,69 @@ class DashboardScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // TOPO
-                        const SizedBox(height: 58),
+                        const SizedBox(height: 48), // levemente menor, como no Figma
                         Row(
                           children: [
-                            // Ícone SVG amizade.svg (30x30)
                             SizedBox(width: 30, height: 30, child: SvgPicture.asset('assets/icons/amizade.svg', width: 24, height: 24)),
                             const SizedBox(width: 7),
                             Text('Junta AÍ!', style: AppTypography.titleHome.copyWith(fontSize: 16)),
                             const Spacer(),
-                            // ==== SVG do menu (substitui Icons.tune_rounded) ====
-                            SvgPicture.asset(
-                              'assets/icons/menu.svg',
-                              width: 24,
-                              height: 24,
-                              // deixa a cor seguir o tema preto padrão
-                              colorFilter: const ColorFilter.mode(AppColors.text, BlendMode.srcIn),
-                            ),
+                            SvgPicture.asset('assets/icons/menu.svg', width: 24, height: 24, colorFilter: const ColorFilter.mode(AppColors.text, BlendMode.srcIn)),
                           ],
                         ),
 
                         // SAUDAÇÃO
-                        const SizedBox(height: 53),
+                        const SizedBox(height: 36),
                         Text('Olá, Seja bem-vinda!', style: AppTypography.loginTitle.copyWith(fontSize: 14)),
                         const SizedBox(height: 6),
                         Text('Aqui nós buscamos respeito e proteção para todas as mulheres.', style: AppTypography.loginSubtitle.copyWith(fontSize: 12, color: AppColors.textHint)),
 
                         // TÍTULO SEÇÃO
-                        const SizedBox(height: 63),
+                        const SizedBox(height: 48),
                         Text('Escolha uma opção', style: AppTypography.loginTitle.copyWith(fontSize: 13)),
 
-                        // GRID 2×2 — cada card 128×135
+                        // GRID 2×2 responsivo (mesmo alinhamento do Figma)
                         const SizedBox(height: 14),
-                        Row(
-                          children: const [
-                            _CardSmall(title: 'Redes de apoio', chipColor: AppColors.chip, imagePath: 'assets/images/amor_proprio.png'),
-                            SizedBox(width: 11),
-                            _CardSmall(title: 'Tipos e ciclo da\nviolência', chipColor: AppColors.chip, imagePath: 'assets/images/dedo_indicador.png'),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                        Row(
-                          children: const [
-                            _CardSmall(title: 'Denuncie aqui', chipColor: AppColors.chipSoft, imagePath: 'assets/images/denunciante.png'),
-                            SizedBox(width: 11),
-                            _CardSmall(title: 'Rompendo o ciclo', chipColor: AppColors.chipSoft, imagePath: 'assets/images/flor_de_lotus.png'),
-                          ],
+                        LayoutBuilder(
+                          builder: (context, constraints) {
+                            // largura útil dentro do padding (27px já aplicados)
+                            final max = constraints.maxWidth; // ~336px no iPhone 390
+                            const gap = 11.0;
+                            final cardW = (max - gap) / 2; // preenche as duas colunas com o gap central
+                            return Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    _CardSmall(width: cardW, title: 'Redes de apoio', chipColor: AppColors.chip, imagePath: 'assets/images/amor_proprio.png'),
+                                    const SizedBox(width: gap),
+                                    _CardSmall(width: cardW, title: 'Tipos e ciclo da\nviolência', chipColor: AppColors.chip, imagePath: 'assets/images/dedo_indicador.png'),
+                                  ],
+                                ),
+                                const SizedBox(height: 14),
+                                Row(
+                                  children: [
+                                    _CardSmall(width: cardW, title: 'Denuncie aqui', chipColor: AppColors.chipSoft, imagePath: 'assets/images/denunciante.png'),
+                                    const SizedBox(width: gap),
+                                    _CardSmall(width: cardW, title: 'Rompendo o ciclo', chipColor: AppColors.chipSoft, imagePath: 'assets/images/flor_de_lotus.png'),
+                                  ],
+                                ),
+                              ],
+                            );
+                          },
                         ),
 
                         // CARD LARGO
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 22),
                         Align(
                           alignment: Alignment.centerLeft,
                           child: SizedBox(
-                            width: 292,
-                            child: const _CardWide(title: 'Reponder questionário', chipColor: AppColors.chipSoft, imagePath: 'assets/images/perguntando.png'),
+                            width: 292, // mesmo do Figma (mais estreito que a largura útil)
+                            child: const _CardWide(title: 'Responder questionário', chipColor: AppColors.chipSoft, imagePath: 'assets/images/perguntando.png'),
                           ),
                         ),
 
                         // Texto explicativo
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 22),
                         Padding(
                           padding: const EdgeInsets.only(left: 25),
                           child: SizedBox(
@@ -160,16 +164,17 @@ class DashboardScreen extends StatelessWidget {
 
 /* ---------------------------- SMALL CARD ---------------------------- */
 class _CardSmall extends StatelessWidget {
-  const _CardSmall({required this.title, required this.chipColor, required this.imagePath});
+  const _CardSmall({required this.title, required this.chipColor, required this.imagePath, required this.width});
 
   final String title;
   final Color chipColor;
   final String imagePath;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 128,
+      width: width, // <- largura calculada no LayoutBuilder (bate nas 2 colunas)
       height: 135,
       child: Container(
         decoration: BoxDecoration(

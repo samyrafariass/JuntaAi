@@ -8,9 +8,10 @@ import '../../features/auth/presentation/login_screen.dart';
 import '../../features/register/presentation/cadastro_screen.dart';
 import '../../features/dashboard/presentation/dashboard_screen.dart';
 
-// telas de recuperação (somente as prontas)
+// telas de recuperação
 import '../../features/auth/presentation/recovery_request_screen.dart';
 import '../../features/auth/presentation/recovery_code_screen.dart';
+import '../../features/auth/presentation/recovery_reset_screen.dart'; // ✅ nova tela
 
 class AppRouter {
   // Transição padrão: slide da direita (300ms)
@@ -70,6 +71,11 @@ class AppRouter {
         path: '/recovery/code',
         name: 'recovery_code',
         pageBuilder: (_, __) => _slideRightPage(child: const RecoveryCodeScreen()),
+      ),
+      GoRoute(
+        path: '/recovery/reset',
+        name: 'recovery_reset',
+        pageBuilder: (_, __) => _slideRightPage(child: const RecoveryResetScreen()),
       ),
     ],
     errorBuilder: (_, __) => const Scaffold(body: Center(child: Text('Rota não encontrada'))),
