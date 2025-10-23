@@ -33,4 +33,12 @@ class AppColors {
   static const cardBorder = border; // usa o mesmo #D9D9D959
   static const cardShadow = shadow; // usa o mesmo #D9D9D933
   static const primaryPink = primary; // usa o rosa principal
+
+  // ======== MENU (CORES ESPECÍFICAS) ========
+  static const pinkOverlay = Color(0x4DFAB7D0); // #FAB7D04D (retângulos)
+  static const pinkStrong = Color(0xCCEE1162); // #EE1162CC (ícones)
+  static const redOverlay = Color(0x1FE42626); // #E426261F (logout fundo)
+  static const redStrong = Color(0xFFE42626); // #E42626 (logout ícone)
+  static const grayArrow = Color(0xFF5F6368); // setas do menu
+  static const closeIcon = Color(0xFF1F1F1F); // botão X
 }
