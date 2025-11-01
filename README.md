@@ -6,8 +6,10 @@ Projeto Unificado: Experiencia Extensionista / Laboratório de Banco de Dados / 
 O projeto se encontra na conclusão de sua fase de Desenvolvimento do MVP (Mínimo Produto Viável)!
 
 - O que é o Junta Aí!?
-Aplicação que tem como objetivo ORIENTAR, ENSINAR e INCENTIVAR a mulher a romper o ciclo da violência em que se encontra, visando reduzir o crescimento alarmante de violência contra a mulher.
-Funciona como uma REDE DE APOIO para mulheres em situação de violência.
+
+# Aplicação que tem como objetivo ORIENTAR, ENSINAR e INCENTIVAR a mulher a romper o ciclo da violência em que se encontra, visando reduzir o crescimento alarmante de violência contra a mulher.
+
+# Funciona como uma REDE DE APOIO para mulheres em situação de violência.
 
 ---
 
