@@ -3,7 +3,7 @@
 Projeto Unificado: Experiencia Extensionista / Laboratório de Banco de Dados / Desenvolvimento Seguro
 
 - INÍCIO DA IDEAÇÃO DO PROJETO: 02/01/2025
-O projeto se encontra na conclusão de sua fase de Desenvolvimento do MVP (Mínimo Produto Viável)!
+- O projeto se encontra na conclusão de sua fase de Desenvolvimento do MVP (Mínimo Produto Viável)!
 
 # O que é o Junta Aí!?
 
