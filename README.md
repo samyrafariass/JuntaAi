@@ -3,11 +3,11 @@
 Projeto Unificado: Experiencia Extensionista / Laboratório de Banco de Dados / Desenvolvimento Seguro
 
 - INÍCIO DA IDEAÇÃO DO PROJETO: 02/01/2025
-- O projeto se encontra na conclusão de sua fase de Desenvolvimento do MVP (Mínimo Produto Viável)!
+O projeto se encontra na conclusão de sua fase de Desenvolvimento do MVP (Mínimo Produto Viável)!
 
-* O que é o Junta Aí!?
-- É uma aplicação que tem como objetivo ORIENTAR, ENSINAR e INCENTIVAR a mulher a romper o ciclo da violência em que se encontra, visando reduzir o crescimento alarmante de violência contra a mulher.
-- Funciona como uma REDE DE APOIO para mulheres em situação de violência.
+- O que é o Junta Aí!?
+Aplicação que tem como objetivo ORIENTAR, ENSINAR e INCENTIVAR a mulher a romper o ciclo da violência em que se encontra, visando reduzir o crescimento alarmante de violência contra a mulher.
+Funciona como uma REDE DE APOIO para mulheres em situação de violência.
 
 ---
 
@@ -24,9 +24,9 @@ Projeto Unificado: Experiencia Extensionista / Laboratório de Banco de Dados / 
 
 ## 🛠️ Tecnologias Utilizadas
 
-- Mobile
+Mobile
 * [Flutter](https://flutter.dev/)
-- BackEnd
+BackEnd
 * [Python](https://www.python.org/)
 * [FastAPI](https://fastapi.tiangolo.com/)
 * [SQL Server](https://www.microsoft.com/sql-server)
