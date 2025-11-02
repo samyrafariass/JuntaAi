@@ -1,13 +1,9 @@
-# schemas Pydantic para validação dos dados que entram e saem da API
-# Usado para requisições POST, PUT... e Respostas GET
-# Deve conter UserBase, UserCreate, UserResponstas, deve conter: EmailStr, orm_mode, tipos corretos
 # Imports
 from pydantic import BaseModel, EmailStr
 from typing import Optional
 from datetime import date
 from shared import EnderecoBase
 
-# ---------------- Usuária ----------------
 class UserCreate(BaseModel):
     Nome: str
     Data_Nascimento: date
@@ -15,6 +11,10 @@ class UserCreate(BaseModel):
     Email: EmailStr
     Senha: str
     Telefone: str = None
+
+class AdicionaUsuariaRedeApoio(BaseModel):
+    Id_Usuaria: int
+    Id_Rede_Apoio: int
 
 class UserUpdate(BaseModel):
     Nome: Optional[str]
@@ -31,4 +31,14 @@ class UserResponse(BaseModel):
 
     class Config:
         from_attributes = True  # permite converter objetos SQLAlchemy para JSON
+
+class ResponseConteudoAcessado(BaseModel):
+    Id_Conteudo: int
+    Conteudo: str
+    Descricao: str
+    Data_Acesso: datetime
+
+    class Config:
+        orm_mode = True
+
 
