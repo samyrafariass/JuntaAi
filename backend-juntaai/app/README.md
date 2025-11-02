@@ -29,5 +29,6 @@ app/
  │ README.md # Apresentação do Back
 
 ```
-
 ---
+
+> Projeto acadêmico desenvolvido como parte do curso de **Ciência da Computação (UNIT - PE)**.
