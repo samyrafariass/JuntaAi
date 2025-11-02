@@ -36,7 +36,6 @@ class Conteudo_Informativo(Base):
     Id_Conteudo: Mapped[int] = mapped_column(Integer, Identity(start=1000, increment=1), primary_key=True)
     Conteudo: Mapped[str] = mapped_column(String(30, 'Latin1_General_CI_AS'), nullable=False)
     Descricao: Mapped[str] = mapped_column(String(100, 'Latin1_General_CI_AS'), nullable=False)
-    Data_Hora: Mapped[Optional[datetime.datetime]] = mapped_column(DateTime, server_default=text('(getdate())'))
 
     Acessa_Usuaria_Conteudo: Mapped[list['Acessa_Usuaria_Conteudo']] = relationship('Acessa_Usuaria_Conteudo', back_populates='Conteudo_Informativo')
 
@@ -210,3 +209,4 @@ Gera_Denuncia_Usuaria = Table(
     ForeignKeyConstraint(['Id_Usuaria'], ['Usuaria.Id_Usuaria'], name='FK__Gera_Denu__Id_Us__70DDC3D8'),
     PrimaryKeyConstraint('Id_Usuaria', 'Id_Denuncia', name='PK__Gera_Den__5511048F2A9CD243')
 )
+
