@@ -1,6 +1,6 @@
 # 🤝 Junta Aí
 
-Projeto Unificado: Experiencia Extensionista / Laboratório de Banco de Dados / Desenvolvimento Seguro
+Projeto Unificado: Experiencia Extensionista / Laboratório de Banco de Dados / Interface Humano Computador / Desenvolvimento Seguro
 
 - INÍCIO DA IDEAÇÃO DO PROJETO: 02/01/2025
 - O projeto encontra-se na fase de conclusão do Desenvolvimento do MVP (Mínimo Produto Viável)!
@@ -37,46 +37,6 @@ BackEnd
 * [JWT](https://jwt.io/)
 * [OAuth](https://oauth.net/2/)
 
----
-
-## 📂 Estrutura do Projeto
-
-```bash
-app/
- ├── db/    # Conexão com o Banco de Dados (BD)
- │    ├── database_conection.py
- ├── model  # Tabelas do Banco de Dados - Gerada via SQLACODEGEN
- │    ├── db_model.py
- ├── routes
- │    ├── router_alerta.py
- │    ├── router_auth.py
- │    ├── router_classificacao.py
- │    ├── router_conteudo_informativo.py
- │    ├── router_denuncia.py
- │    ├── router_orgao.py
- │    ├── router_rede_apoio.py
- │    ├── router_tipo_violencia.py
- │    ├──router_usuaria.py
- ├── services/   # Regras de negócio
- │    ├── auth_schema.py
- │    ├── classificacao_schema.py
- │    ├── conteudo_informativo_schema.py
- │    ├── denuncia_schema.py
- │    ├── orgao_schema.py
- │    ├── rede_apoio_schema.py
- │    ├── schema_alerta.py
- │    ├── shared.py # EnderecoBase - Atributos em comum das tabelas
- │    ├── tipo_violencia_schema.py
- │    ├── usuaria_schema.py
- ├── utils/   # Arquivos de configuração e segurança
- │    ├── config.py
- │    ├── security.py
- │    ├── token_por_email.py
- └── main.py    # aplicação principal
- │ .env # dados sensíveis da aplicação
- │ requeriments.txt # imports utilizados
-
-```
 
 ---
 
