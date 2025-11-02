@@ -1,17 +1,21 @@
 from pydantic import BaseModel
 from typing import Optional
 
-class RecomendacaoCanalDenuncia:
-    pass
+class RecomendacaoCanalDenuncia(BaseModel):
+    Id_Usuaria: int
+    Resposta: str
+    Status: bool
 
-class RecomendacaoRedeApoio:
-    pass
+class RecomendacaoRedeApoio(BaseModel):
+    Id_Usuaria: int
+    Resposta: str
+    Status: bool
 
-class ResponseTipoViolencia:
+class ResponseTipoViolencia(BaseModel):
     Id_Tipo_Violencia: int
     Sessao: int
     Pergunta: str
-    Resposta: int
+    Resposta: str
     Status: bool
 
     class Config:
