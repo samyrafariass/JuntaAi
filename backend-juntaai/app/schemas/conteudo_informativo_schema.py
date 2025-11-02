@@ -1,13 +1,19 @@
 from pydantic import BaseModel
 from typing import Optional
-from datetime import datetime
-from shared import EnderecoBase
 
-class ResponseConteudoInformativo:
+class AdicionarConteudo(BaseModel):
+    Conteudo: str
+    Descricao: str
+
+class AtualizarConteudo(BaseModel):
+    Id_Conteudo: int
+    Conteudo: Optional[str]
+    Descricao: Optional[str]
+
+class ResponseConteudo(BaseModel):
     Id_Conteudo: int
     Conteudo: str
     Descricao: str
-    Data_Hora: int
 
     class Config:
         orm_mode = True  # permite converter objetos SQLAlchemy para JSON
