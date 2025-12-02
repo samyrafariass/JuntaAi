@@ -112,7 +112,7 @@ CREATE TABLE Sofre_Tipo_Violencia_Usuaria (Id_Usuaria INTEGER NOT NULL,
 											FOREIGN KEY (Id_Tipo_Violencia) REFERENCES Tipo_Violencia(Id_Tipo_Violencia) ON DELETE CASCADE,
 											PRIMARY KEY (Id_Usuaria, Id_Tipo_Violencia));
 
-Permitir que a usuária seja NULL no back
+--Permitir que a usuária seja NULL no back
 CREATE TABLE Gera_Denuncia_Usuaria (Id_Usuaria INT,
 									  Id_Denuncia INT NOT NULL,
 								      FOREIGN KEY(Id_Usuaria) REFERENCES Usuaria(Id_Usuaria),
@@ -205,7 +205,7 @@ VALUES
 	   (1000, 1001);
 
 
- --Triggers, Views, Functions e Stored Procedures (Ainda não foram criados)
+ --Triggers, Views, Functions e Stored Procedures
 
  --Colocar o item excluído da tabela usuária em uma cópia de uma tabela "morto"
 
@@ -336,6 +336,23 @@ FROM Orgao O
 LEFT JOIN Alerta A ON A.Id_Orgao = O.Id_Orgao
 GROUP BY O.Id_Orgao, O.Nome;
 
+ --Consultar a quantidade mínima de acessos aos conteúdos informativos, mostrando qual teve menos acessos
+
+SELECT c.Id_Conteudo, c.Conteudo, c.Descricao, t.qtd_acessos
+FROM (
+    SELECT Id_Conteudo, COUNT(*) AS qtd_acessos
+    FROM Acessa_Usuaria_Conteudo
+    GROUP BY Id_Conteudo
+) AS t
+JOIN Conteudo_Informativo c ON c.Id_Conteudo = t.Id_Conteudo
+WHERE t.qtd_acessos = (
+    SELECT MIN(qtd_acessos)
+    FROM (
+        SELECT Id_Conteudo, COUNT(*) AS qtd_acessos
+        FROM Acessa_Usuaria_Conteudo
+        GROUP BY Id_Conteudo
+    ) AS x
+);
 
  --Quantidade de denúncias por usuária e o último registro feito
 
