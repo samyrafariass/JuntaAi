@@ -43,7 +43,7 @@ CREATE TABLE Rede_Apoio (
     Horario VARCHAR(15) NOT NULL
 );
 
-CREATE TABLE Conteudo_Informativo (
+CREATE TABLE Informativo (
     Id_Conteudo INTEGER PRIMARY KEY IDENTITY(1000,1),
     Conteudo VARCHAR(30) NOT NULL,
     Descricao VARCHAR(100) NOT NULL,
@@ -108,7 +108,7 @@ CREATE TABLE Denuncia (
     FOREIGN KEY (Id_Usuaria) REFERENCES Usuaria(Id_Usuaria)
 );
 
-CREATE TABLE Utiliza_Rede_Apoio_Usuaria (
+CREATE TABLE Rede_Usuaria (
     Id_Rede_Apoio INTEGER NOT NULL,
     Id_Usuaria INTEGER NOT NULL,
     FOREIGN KEY (Id_Rede_Apoio) REFERENCES Rede_Apoio(Id_Rede_Apoio) ON DELETE NO ACTION,
@@ -116,7 +116,7 @@ CREATE TABLE Utiliza_Rede_Apoio_Usuaria (
     PRIMARY KEY (Id_Rede_Apoio, Id_Usuaria)
 );
 
-CREATE TABLE Acessa_Usuaria_Conteudo (
+CREATE TABLE Informativo_Usuaria (
     Id_Usuaria INTEGER NOT NULL,
     Id_Conteudo INTEGER NOT NULL,
     Data_Acesso DATETIME DEFAULT GETDATE(),
@@ -125,7 +125,7 @@ CREATE TABLE Acessa_Usuaria_Conteudo (
     PRIMARY KEY (Id_Usuaria, Id_Conteudo)
 );
 
-CREATE TABLE Sofre_Tipo_Violencia_Usuaria (
+CREATE TABLE Usuaria_Violencia (
     Id_Usuaria INTEGER NOT NULL,
     Id_Tipo_Violencia INTEGER NOT NULL,
     FOREIGN KEY (Id_Usuaria) REFERENCES Usuaria(Id_Usuaria) ON DELETE NO ACTION,
@@ -190,13 +190,13 @@ VALUES
 ('Violência Moral', 'Xingamentos, humilhações'),
 ('Violência Patrimonial', 'Subtração de bens financeiros');
 
-INSERT INTO Utiliza_Rede_Apoio_Usuaria (Id_Rede_Apoio, Id_Usuaria)
+INSERT INTO Rede_Usuaria (Id_Rede_Apoio, Id_Usuaria)
 VALUES (1000, 1000);
 
-INSERT INTO Acessa_Usuaria_Conteudo (Id_Usuaria, Id_Conteudo, Data_Acesso)
+INSERT INTO Informativo_Usuaria (Id_Usuaria, Id_Conteudo, Data_Acesso)
 VALUES (1001, 1000, GETDATE());
 
-INSERT INTO Sofre_Tipo_Violencia_Usuaria (Id_Usuaria, Id_Tipo_Violencia)
+INSERT INTO Usuaria_Violencia (Id_Usuaria, Id_Tipo_Violencia)
 VALUES (1002, 1002);
 
 -- ============================================
@@ -339,6 +339,6 @@ SELECT * FROM Classificacao;
 SELECT * FROM Denuncia;
 SELECT * FROM Conteudo_Informativo;
 SELECT * FROM Tipo_Violencia;
-SELECT * FROM Utiliza_Rede_Apoio_Usuaria;
-SELECT * FROM Acessa_Usuaria_Conteudo;
-SELECT * FROM Sofre_Tipo_Violencia_Usuaria;
+SELECT * FROM Rede_Usuaria;
+SELECT * FROM Informativo_Usuaria;
+SELECT * FROM Usuaria_Violencia;
