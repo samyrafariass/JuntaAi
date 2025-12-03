@@ -2,6 +2,13 @@ CREATE DATABASE DBJuntaai;
 GO
 USE DBJuntaai;
 
+IF DB_ID('DBJuntaai') IS NOT NULL
+BEGIN
+    ALTER DATABASE DBJuntaai SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+    DROP DATABASE DBJuntaai;
+END
+GO
+
  --Tabelas
 
 CREATE TABLE Usuaria (Id_Usuaria INTEGER PRIMARY KEY IDENTITY(1000,1),
@@ -112,14 +119,6 @@ CREATE TABLE Sofre_Tipo_Violencia_Usuaria (Id_Usuaria INTEGER NOT NULL,
 											FOREIGN KEY (Id_Tipo_Violencia) REFERENCES Tipo_Violencia(Id_Tipo_Violencia) ON DELETE CASCADE,
 											PRIMARY KEY (Id_Usuaria, Id_Tipo_Violencia));
 
---Permitir que a usuária seja NULL no back
-CREATE TABLE Gera_Denuncia_Usuaria (Id_Usuaria INT,
-									  Id_Denuncia INT NOT NULL,
-								      FOREIGN KEY(Id_Usuaria) REFERENCES Usuaria(Id_Usuaria),
-									  FOREIGN KEY(Id_Denuncia) REFERENCES Denuncia(Id_Denuncia) ON DELETE CASCADE,
-									  PRIMARY KEY (Id_Usuaria, Id_Denuncia));
-
-
  -- Alimentando as Tabelas
 
 INSERT INTO 
@@ -196,14 +195,6 @@ INSERT INTO
 	   Sofre_Tipo_Violencia_Usuaria (Id_Usuaria, Id_Tipo_Violencia)
 VALUES
 	   (1002, 1002);
-
-
-INSERT INTO 
-	   Gera_Denuncia_Usuaria (Id_Usuaria, Id_Denuncia)
-VALUES
-	   (NULL, 1000),
-	   (1000, 1001);
-
 
  --Triggers, Views, Functions e Stored Procedures
 
