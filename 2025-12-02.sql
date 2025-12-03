@@ -1,6 +1,3 @@
-/* =========================================================
-   RESET (pra testar do zero)
-   ========================================================= */
 USE master;
 GO
 
@@ -16,11 +13,6 @@ GO
 USE DBJuntaai;
 GO
 
-/* =========================================================
-   TABELAS PRINCIPAIS
-   ========================================================= */
-
--- 1) Usuaria (aqui vai a exigência de AUTONUMERAÇÃO 1000 com incremento 10)
 CREATE TABLE dbo.Usuaria (
     Id_Usuaria       INT IDENTITY(1000,10) PRIMARY KEY,
     Nome             VARCHAR(50)  NOT NULL,
@@ -62,7 +54,7 @@ CREATE TABLE dbo.Tipo_Violencia (
     Id_Tipo_Violencia INT IDENTITY(1000,1) PRIMARY KEY,
     Sessao            INT          NOT NULL,
     Pergunta          VARCHAR(200) NOT NULL,
-    Resposta          VARCHAR(20)  NOT NULL DEFAULT 'Sim/Não',
+    Resposta          VARCHAR(20)  NOT NULL DEFAULT 'Sim/NÃ£o',
     Status            BIT          NOT NULL DEFAULT 1
 );
 
@@ -107,7 +99,7 @@ CREATE TABLE dbo.Alerta (
 CREATE TABLE dbo.Denuncia (
     Id_Denuncia        INT IDENTITY(1000,1) PRIMARY KEY,
     Violencia_Sofrida  VARCHAR(20) NOT NULL
-        CHECK (Violencia_Sofrida IN ('Física','Psicológica','Sexual','Patrimonial','Moral')),
+        CHECK (Violencia_Sofrida IN ('FÃ­sica','PsicolÃ³gica','Sexual','Patrimonial','Moral')),
     Situacao_Atual     VARCHAR(15) NOT NULL
         CHECK (Situacao_Atual IN ('Em perigo','Controlada','Fora de perigo')),
     Descricao          VARCHAR(200) NOT NULL,
@@ -117,9 +109,6 @@ CREATE TABLE dbo.Denuncia (
     CONSTRAINT FK_Denuncia_Orgao FOREIGN KEY (Id_Orgao) REFERENCES dbo.Orgao(Id_Orgao)
 );
 
-/* =========================================================
-   TABELAS ASSOCIATIVAS (N:N)
-   ========================================================= */
 
 CREATE TABLE dbo.Utiliza_Rede_Apoio_Usuaria (
     Id_Rede_Apoio INT NOT NULL,
@@ -150,8 +139,7 @@ CREATE TABLE dbo.Sofre_Tipo_Violencia_Usuaria (
         REFERENCES dbo.Tipo_Violencia(Id_Tipo_Violencia) ON DELETE CASCADE
 );
 
--- Aqui você queria permitir usuária NULL. PK não aceita NULL.
--- Solução: PK própria + Id_Usuaria NULL permitido.
+
 CREATE TABLE dbo.Gera_Denuncia_Usuaria (
     Id_Gera     INT IDENTITY(1000,1) PRIMARY KEY,
     Id_Usuaria  INT NULL,
@@ -160,9 +148,6 @@ CREATE TABLE dbo.Gera_Denuncia_Usuaria (
     CONSTRAINT FK_Gera_Denuncia FOREIGN KEY (Id_Denuncia) REFERENCES dbo.Denuncia(Id_Denuncia) ON DELETE CASCADE
 );
 
-/* =========================================================
-   TABELAS “MORTO” (AUDITORIA DE DELETE) + TRIGGERS
-   ========================================================= */
 
 CREATE TABLE dbo.Verifica_Delete_Usuaria (
     Id_Usuaria      INT,
@@ -271,10 +256,6 @@ BEGIN
 END;
 GO
 
-/* =========================================================
-   FUNCTION + VIEW
-   ========================================================= */
-
 CREATE OR ALTER FUNCTION dbo.Calcula_Idade_Usuaria(@Data_Nascimento DATE)
 RETURNS INT
 AS
@@ -299,22 +280,18 @@ SELECT
 FROM dbo.Usuaria u;
 GO
 
--- View corrigida: tipo (anônima vs identificada) e status (ativa vs retirada)
 CREATE OR ALTER VIEW dbo.Qtd_Denuncia_Por_Tipo_E_Status AS
 SELECT
-    CASE WHEN g.Id_Usuaria IS NULL THEN 'Anônima' ELSE 'Identificada' END AS Tipo,
+    CASE WHEN g.Id_Usuaria IS NULL THEN 'AnÃ´nima' ELSE 'Identificada' END AS Tipo,
     CASE WHEN d.Status_Denuncia = 1 THEN 'Ativa' ELSE 'Retirada' END AS Status,
     COUNT(*) AS Quantidade
 FROM dbo.Denuncia d
 JOIN dbo.Gera_Denuncia_Usuaria g ON g.Id_Denuncia = d.Id_Denuncia
 GROUP BY
-    CASE WHEN g.Id_Usuaria IS NULL THEN 'Anônima' ELSE 'Identificada' END,
+    CASE WHEN g.Id_Usuaria IS NULL THEN 'AnÃ´nima' ELSE 'Identificada' END,
     CASE WHEN d.Status_Denuncia = 1 THEN 'Ativa' ELSE 'Retirada' END;
 GO
 
-/* =========================================================
-   STORED PROCEDURES (corrigidas)
-   ========================================================= */
 
 CREATE OR ALTER PROCEDURE dbo.Cancelar_Alerta
     @Id_Alerta INT
@@ -336,25 +313,14 @@ BEGIN
 END;
 GO
 
-/* =========================================================
-   INDEX (mín. 1)
-   ========================================================= */
-
--- Índices úteis (e já mata o requisito de INDEX)
 CREATE INDEX IX_Alerta_Id_Orgao   ON dbo.Alerta(Id_Orgao);
 CREATE INDEX IX_Alerta_Id_Usuaria ON dbo.Alerta(Id_Usuaria);
 CREATE INDEX IX_Denuncia_Id_Orgao ON dbo.Denuncia(Id_Orgao);
 
--- Evita duplicar vínculo de denúncia identificada (usuária não nula)
 CREATE UNIQUE INDEX UX_GeraDenuncia_Identificada
 ON dbo.Gera_Denuncia_Usuaria(Id_Usuaria, Id_Denuncia)
 WHERE Id_Usuaria IS NOT NULL;
 GO
-
-/* =========================================================
-   INSERTS (3 REGISTROS EM CADA TABELA)
-   - sem hardcode de IDs (pra não quebrar com IDENTITY 10)
-   ========================================================= */
 
 DECLARE @u1 INT, @u2 INT, @u3 INT;
 DECLARE @r1 INT, @r2 INT, @r3 INT;
@@ -365,126 +331,108 @@ DECLARE @o1 INT, @o2 INT, @o3 INT;
 DECLARE @a1 INT, @a2 INT, @a3 INT;
 DECLARE @d1 INT, @d2 INT, @d3 INT;
 
--- Usuaria (3)
 INSERT INTO dbo.Usuaria (Nome, Data_Nascimento, Telefone, CEP, Rua_Avenida, Num_Imovel, Bairro, Cidade, Estado, Email, Senha)
-VALUES ('Julia Manuelly', '2000-10-02', '8191234-5678', '00000-000', 'Rua das Flores', 123, 'Assunção', 'Recife', 'PE', 'julia@gmail.com', '12345678');
+VALUES ('Julia Manuelly', '2000-10-02', '8191234-5678', '00000-000', 'Rua das Flores', 123, 'AssunÃ§Ã£o', 'Recife', 'PE', 'julia@gmail.com', '12345678');
 SET @u1 = SCOPE_IDENTITY();
 
 INSERT INTO dbo.Usuaria (Nome, Data_Nascimento, Telefone, CEP, Rua_Avenida, Num_Imovel, Bairro, Cidade, Estado, Email, Senha)
-VALUES ('Maria Estela', '1980-08-10', '8191234-5678', '00000-000', 'Av. Recife', 456, 'Magalhães', 'Recife', 'PE', 'maria@gmail.com', '12345678');
+VALUES ('Maria Estela', '1980-08-10', '8191234-5678', '00000-000', 'Av. Recife', 456, 'MagalhÃ£es', 'Recife', 'PE', 'maria@gmail.com', '12345678');
 SET @u2 = SCOPE_IDENTITY();
 
 INSERT INTO dbo.Usuaria (Nome, Data_Nascimento, Telefone, CEP, Rua_Avenida, Num_Imovel, Bairro, Cidade, Estado, Email, Senha)
 VALUES ('Ana Maria', '1999-01-27', '8191234-5678', '00000-000', 'Rua da Alegria', 789, 'Pontezinha', 'Cabo de Santo Agostinho', 'PE', 'ana@gmail.com', '12345678');
 SET @u3 = SCOPE_IDENTITY();
 
--- Rede_Apoio (3)
 INSERT INTO dbo.Rede_Apoio (Nome, Responsavel, Descricao, Telefone, CEP, Rua_Avenida, Num_Imovel, Bairro, Cidade, Estado, Horario)
-VALUES ('ONG Marias', 'Maria José', 'Acolhimento e independência', '81912345678', '00000-000', 'Av. Recife', 456, 'Magalhães', 'Recife', 'PE', '08h às 19h');
+VALUES ('ONG Marias', 'Maria JosÃ©', 'Acolhimento e independÃªncia', '81912345678', '00000-000', 'Av. Recife', 456, 'MagalhÃ£es', 'Recife', 'PE', '08h Ã s 19h');
 SET @r1 = SCOPE_IDENTITY();
 
 INSERT INTO dbo.Rede_Apoio (Nome, Responsavel, Descricao, Telefone, CEP, Rua_Avenida, Num_Imovel, Bairro, Cidade, Estado, Horario)
-VALUES ('ONG Malala', 'Augusta Lima', 'Acolhendo mulheres em risco', '81900000000', '00000-000', 'Rua da Alegria', 789, 'Centro', 'Cabo de Santo Agostinho', 'PE', '08h às 19h');
+VALUES ('ONG Malala', 'Augusta Lima', 'Acolhendo mulheres em risco', '81900000000', '00000-000', 'Rua da Alegria', 789, 'Centro', 'Cabo de Santo Agostinho', 'PE', '08h Ã s 19h');
 SET @r2 = SCOPE_IDENTITY();
 
 INSERT INTO dbo.Rede_Apoio (Nome, Responsavel, Descricao, Telefone, CEP, Rua_Avenida, Num_Imovel, Bairro, Cidade, Estado, Horario)
-VALUES ('ONG Renascer', 'Margarida Silva', 'Rompa o ciclo e recomece', '81988887777', '00000-000', 'Av. Boa Viagem', 10, 'Boa Viagem', 'Recife', 'PE', '08h às 17h');
+VALUES ('ONG Renascer', 'Margarida Silva', 'Rompa o ciclo e recomece', '81988887777', '00000-000', 'Av. Boa Viagem', 10, 'Boa Viagem', 'Recife', 'PE', '08h Ã s 17h');
 SET @r3 = SCOPE_IDENTITY();
 
--- Conteudo_Informativo (3)
 INSERT INTO dbo.Conteudo_Informativo (Conteudo, Descricao) VALUES
-('Violência Física', 'Socos, tapas e empurrões'),
-('Violência Moral', 'Xingamentos, humilhações'),
-('Violência Patrimonial', 'Subtração de bens e controle financeiro');
+('ViolÃªncia FÃ­sica', 'Socos, tapas e empurrÃµes'),
+('ViolÃªncia Moral', 'Xingamentos, humilhaÃ§Ãµes'),
+('ViolÃªncia Patrimonial', 'SubtraÃ§Ã£o de bens e controle financeiro');
 
 SELECT @c1 = MIN(Id_Conteudo), @c3 = MAX(Id_Conteudo) FROM dbo.Conteudo_Informativo;
--- pega o do meio
 SELECT @c2 = Id_Conteudo FROM dbo.Conteudo_Informativo
 WHERE Id_Conteudo NOT IN (@c1, @c3);
 
--- Tipo_Violencia (3)
 INSERT INTO dbo.Tipo_Violencia (Sessao, Pergunta) VALUES
 (1, 'Possui filhos com o agressor?'),
-(4, 'Você está sofrendo humilhações ou xingamentos?'),
+(4, 'VocÃª estÃ¡ sofrendo humilhaÃ§Ãµes ou xingamentos?'),
 (2, 'O agressor controla seu dinheiro ou bens?');
 
 SELECT @tv1 = MIN(Id_Tipo_Violencia), @tv3 = MAX(Id_Tipo_Violencia) FROM dbo.Tipo_Violencia;
 SELECT @tv2 = Id_Tipo_Violencia FROM dbo.Tipo_Violencia
 WHERE Id_Tipo_Violencia NOT IN (@tv1, @tv3);
 
--- Classificacao (3)
 INSERT INTO dbo.Classificacao (Descricao, Telefone, CEP, Rua_Avenida, Num_Imovel, Bairro, Cidade, Estado) VALUES
-('Especializada em violência contra a mulher', '180', '00000-000', 'Av. Boa Viagem', 0, 'Boa Viagem', 'Recife', 'PE'),
-('Atendimento em violência contra a mulher envolvendo crianças', '100', '00000-000', 'Av. Rosa Branca', 0, 'Boa Viagem', 'Recife', 'PE'),
-('Atende em casos de violência física', '190', '00000-000', 'Av. Francisco da Cunha', 123, 'Boa Viagem', 'Recife', 'PE');
+('Especializada em violÃªncia contra a mulher', '180', '00000-000', 'Av. Boa Viagem', 0, 'Boa Viagem', 'Recife', 'PE'),
+('Atendimento em violÃªncia contra a mulher envolvendo crianÃ§as', '100', '00000-000', 'Av. Rosa Branca', 0, 'Boa Viagem', 'Recife', 'PE'),
+('Atende em casos de violÃªncia fÃ­sica', '190', '00000-000', 'Av. Francisco da Cunha', 123, 'Boa Viagem', 'Recife', 'PE');
 
 SELECT @cl1 = MIN(Id_Classificacao), @cl3 = MAX(Id_Classificacao) FROM dbo.Classificacao;
 SELECT @cl2 = Id_Classificacao FROM dbo.Classificacao
 WHERE Id_Classificacao NOT IN (@cl1, @cl3);
 
--- Orgao (3) (depende de Classificacao)
 INSERT INTO dbo.Orgao (Nome, Descricao_Alerta, Solicitacao, Id_Classificacao) VALUES
-('Delegacia da Mulher', 'Suspeita de agressão pelo parceiro', 1, @cl1),
-('Direitos Humanos', 'Mulher e criança em risco', 0, @cl2),
-('Polícia Militar', 'Indícios de violência física pelo (ex)parceiro', 0, @cl3);
+('Delegacia da Mulher', 'Suspeita de agressÃ£o pelo parceiro', 1, @cl1),
+('Direitos Humanos', 'Mulher e crianÃ§a em risco', 0, @cl2),
+('PolÃ­cia Militar', 'IndÃ­cios de violÃªncia fÃ­sica pelo (ex)parceiro', 0, @cl3);
 
 SELECT @o1 = MIN(Id_Orgao), @o3 = MAX(Id_Orgao) FROM dbo.Orgao;
 SELECT @o2 = Id_Orgao FROM dbo.Orgao
 WHERE Id_Orgao NOT IN (@o1, @o3);
 
--- Alerta (3) (depende Orgao + Usuaria)
 INSERT INTO dbo.Alerta (Status_Alerta, CEP, Rua_Avenida, Num_Imovel, Bairro, Cidade, Estado, Id_Orgao, Id_Usuaria)
 VALUES
 (1, '00000-000', 'Rua da Alegria', 789, 'Pontezinha', 'Cabo de Santo Agostinho', 'PE', @o3, @u1),
-(1, '00000-000', 'Av. Recife', 456, 'Magalhães', 'Recife', 'PE', @o1, @u2),
+(1, '00000-000', 'Av. Recife', 456, 'MagalhÃ£es', 'Recife', 'PE', @o1, @u2),
 (0, '00000-000', 'Av. Boa Viagem', 10, 'Boa Viagem', 'Recife', 'PE', @o2, @u3);
 
 SELECT @a1 = MIN(Id_Alerta), @a3 = MAX(Id_Alerta) FROM dbo.Alerta;
 SELECT @a2 = Id_Alerta FROM dbo.Alerta WHERE Id_Alerta NOT IN (@a1, @a3);
 
--- Denuncia (3) (depende Orgao)
 INSERT INTO dbo.Denuncia (Violencia_Sofrida, Situacao_Atual, Descricao, Status_Denuncia, Id_Orgao)
 VALUES
-('Física', 'Em perigo', 'Vítima apresenta sinais de violência física', 1, @o3),
-('Psicológica', 'Controlada', 'Relato de ameaças e intimidação', 1, @o1),
-('Patrimonial', 'Fora de perigo', 'Controle de recursos e retenção de documentos', 0, @o2);
+('FÃ­sica', 'Em perigo', 'VÃ­tima apresenta sinais de violÃªncia fÃ­sica', 1, @o3),
+('PsicolÃ³gica', 'Controlada', 'Relato de ameaÃ§as e intimidaÃ§Ã£o', 1, @o1),
+('Patrimonial', 'Fora de perigo', 'Controle de recursos e retenÃ§Ã£o de documentos', 0, @o2);
 
 SELECT @d1 = MIN(Id_Denuncia), @d3 = MAX(Id_Denuncia) FROM dbo.Denuncia;
 SELECT @d2 = Id_Denuncia FROM dbo.Denuncia WHERE Id_Denuncia NOT IN (@d1, @d3);
 
--- Utiliza_Rede_Apoio_Usuaria (3)
 INSERT INTO dbo.Utiliza_Rede_Apoio_Usuaria (Id_Rede_Apoio, Id_Usuaria)
 VALUES
 (@r1, @u1),
 (@r2, @u2),
 (@r3, @u3);
 
--- Acessa_Usuaria_Conteudo (3)
 INSERT INTO dbo.Acessa_Usuaria_Conteudo (Id_Usuaria, Id_Conteudo)
 VALUES
 (@u1, @c1),
 (@u2, @c2),
 (@u3, @c3);
 
--- Sofre_Tipo_Violencia_Usuaria (3)
 INSERT INTO dbo.Sofre_Tipo_Violencia_Usuaria (Id_Usuaria, Id_Tipo_Violencia)
 VALUES
 (@u1, @tv1),
 (@u2, @tv2),
 (@u3, @tv3);
 
--- Gera_Denuncia_Usuaria (3) - 1 anônima + 2 identificadas
 INSERT INTO dbo.Gera_Denuncia_Usuaria (Id_Usuaria, Id_Denuncia)
 VALUES
 (NULL, @d1),
 (@u1, @d2),
 (@u2, @d3);
 
-/* =========================================================
-   CONSULTAS (JOIN + alias + agregação)
-   ========================================================= */
-
--- 1) Quantidade de alertas ativos x cancelados por órgão (agregação)
 SELECT
     o.Id_Orgao,
     o.Nome AS Orgao,
@@ -494,7 +442,6 @@ FROM dbo.Orgao o
 LEFT JOIN dbo.Alerta a ON a.Id_Orgao = o.Id_Orgao
 GROUP BY o.Id_Orgao, o.Nome;
 
--- 2) Conteúdo menos acessado (agregação + subquery + alias)
 SELECT c.Id_Conteudo, c.Conteudo, c.Descricao, t.qtd_acessos
 FROM (
     SELECT Id_Conteudo, COUNT(*) AS qtd_acessos
@@ -511,7 +458,6 @@ WHERE t.qtd_acessos = (
     ) x
 );
 
--- 3) Denúncias por usuária (2+ joins na mesma query)
 SELECT
     u.Nome AS Nome_Usuaria,
     COUNT(DISTINCT d.Id_Denuncia) AS Total_Denuncias,
@@ -523,7 +469,7 @@ LEFT JOIN dbo.Denuncia d ON d.Id_Denuncia = g.Id_Denuncia
 LEFT JOIN dbo.Utiliza_Rede_Apoio_Usuaria ura ON ura.Id_Usuaria = u.Id_Usuaria
 GROUP BY u.Nome;
 
--- Views
 SELECT * FROM dbo.Idade_Usuaria;
 SELECT * FROM dbo.Qtd_Denuncia_Por_Tipo_E_Status;
+
 GO
