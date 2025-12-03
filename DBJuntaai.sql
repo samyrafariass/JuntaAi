@@ -20,7 +20,7 @@ CREATE TABLE Usuaria (Id_Usuaria INTEGER PRIMARY KEY IDENTITY(1000,1),
 					  Num_Imovel INTEGER NOT NULL,
 					  Bairro VARCHAR(30) NOT NULL,
 					  Cidade VARCHAR(30) NOT NULL,
-					  Estado VARCHAR(2) NOT NULL,
+					  Estado CHAR(2) NOT NULL,
 					  Email VARCHAR(30) UNIQUE NOT NULL,
 					  Senha VARCHAR(256) NOT NULL);
 
@@ -35,7 +35,7 @@ CREATE TABLE Rede_Apoio (Id_Rede_Apoio INTEGER PRIMARY KEY IDENTITY(1000,1),
 					     Num_Imovel INTEGER NOT NULL,
 					     Bairro VARCHAR(30) NOT NULL,
 					     Cidade VARCHAR(30) NOT NULL,
-					     Estado VARCHAR(2) NOT NULL,
+					     Estado CHAR(2) NOT NULL,
 						 Horario VARCHAR(15) NOT NULL);
 
 
@@ -60,7 +60,7 @@ CREATE TABLE Classificacao (Id_Classificacao INTEGER PRIMARY KEY IDENTITY(1000,1
 					        Num_Imovel INTEGER NOT NULL,
 					        Bairro VARCHAR(30) NOT NULL,
 					        Cidade VARCHAR(30) NOT NULL,
-					        Estado VARCHAR(2) NOT NULL);
+					        Estado CHAR(2) NOT NULL);
 
 
 CREATE TABLE Orgao (Id_Orgao INTEGER PRIMARY KEY IDENTITY(1000,1),
@@ -79,7 +79,7 @@ CREATE TABLE Alerta (Id_Alerta INTEGER PRIMARY KEY IDENTITY(1000,1),
 					 Num_Imovel INTEGER NOT NULL,
 					 Bairro VARCHAR(30) NOT NULL,
 					 Cidade VARCHAR(30) NOT NULL,
-					 Estado VARCHAR(2) NOT NULL,
+					 Estado CHAR(2) NOT NULL,
 					 Id_Orgao INTEGER NOT NULL,
 					 Id_Usuaria INTEGER NOT NULL,
 					 FOREIGN KEY (Id_Orgao) REFERENCES Orgao(Id_Orgao),
@@ -92,8 +92,10 @@ CREATE TABLE Denuncia (Id_Denuncia INTEGER PRIMARY KEY IDENTITY(1000,1),
 					   Descricao VARCHAR(100) NOT NULL,
 					   Data_Hora DATETIME DEFAULT GETDATE(),
 					   Status_Denuncia BIT DEFAULT 0,
+					   Id_Usuaria INTEGER NOT NULL,
 					   Id_Orgao INTEGER NOT NULL,
-					   FOREIGN KEY (Id_Orgao) REFERENCES Orgao(Id_Orgao));
+					   FOREIGN KEY (Id_Orgao) REFERENCES Orgao(Id_Orgao))
+					   FOREIGN KEY (Id_Usuaria) REFERENCES Usuaria(Id_Usuaria));
 
 
 --Tabelas Associativas
