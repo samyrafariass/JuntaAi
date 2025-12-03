@@ -375,4 +375,3 @@ SELECT * FROM Tipo_Violencia;
 SELECT * FROM Utiliza_Rede_Apoio_Usuaria;
 SELECT * FROM Acessa_Usuaria_Conteudo;
 SELECT * FROM Sofre_Tipo_Violencia_Usuaria;
-SELECT * FROM Gera_Denuncia_Usuaria;
